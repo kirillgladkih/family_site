@@ -1,0 +1,57 @@
+<?php
+
+
+namespace App\ApiValidator;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+abstract class ApiCoreValidator
+{
+    protected $req;
+    /*
+     * Запускает валидацю
+     * Если не проходит валидацию
+     * возращает массив с ошибками
+     * @return true | errors
+     * */
+    public function init(Request $request)
+    {
+       $this->req = $request->input();
+
+       $validator = Validator::make(
+            $this->req,
+            $this->rules(),
+            $this->messages(),
+            $this->attributes()
+        );
+
+       if ($validator->fails())
+       {
+           return [
+             'errors' => $validator->errors()
+           ];
+       }
+
+       return false;
+    }
+
+    /*
+     * Правила валидации
+     * @return Array
+     * */
+    abstract function rules();
+
+    /*
+      * Сообщения при ошибке
+      * @return Array
+      * */
+    abstract function messages();
+
+    /*
+      * Название атрибутов
+      * Подставляет значения вместо полей в БД
+      * @return Array
+      * */
+    abstract function attributes();
+}
