@@ -17,7 +17,7 @@ class ApiValidatorSaveGroup extends ApiCoreValidator
                 'integer',
                 function ($attr,$val, $fail){
                     if($val > $this->req['age_after']){
-                        $fail('Возраст до Не может быть больше Возраста до');
+                        $fail('Возраст от не может быть больше возраста до');
                     }
                 },
             ],
@@ -30,19 +30,6 @@ class ApiValidatorSaveGroup extends ApiCoreValidator
 
     public function attributes()
     {
-        return [
-            'name' => 'Название группы',
-            'age_before' => 'Возраст от',
-            'age_after' => 'Возраст до'
-        ];
-    }
-
-    function messages()
-    {
-        return [
-            'unique' => "такое :attribute уже существует",
-            'required' => "Поле не может быть пустым",
-            'integer' => 'Вы ввели не число'
-        ];
+        return Attributes::get();
     }
 }

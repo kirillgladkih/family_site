@@ -1,13 +1,18 @@
 <template>
   <div class="">
     <div>
-      <ModalAdd :action="addActive" /> 
+      <modal-add
+        :action="addActive"
+      />
+      <modal-edit
+        :action="editActive"
+        :old="selected[0]"
+      />
       <b-table
-        ref="selectableTable"
         selectable
         :filter="filter"
         :select-mode="selectMode"
-        :items="items"
+        :items="GROUPS"
         :fields="fields"
         :filter-included-fields="filterOn"
         @row-selected="onRowSelected"
@@ -19,9 +24,12 @@
         <template v-slot:table-caption>
           <ToolBar
             :toolbarData="toolbarData"
+            :allowAction="allowAction"
             @filterEmmitHandler="filterEmmitListener"
             @filterOnEmmitHandler="filterOnEmmitListener"
             @addActiveEmmitHandler="addActiveEmmitListener"
+            @editActiveEmmitHandler="editActiveEmmitListener"
+            @daleteEmmitHandler="daleteEmmitListener"
           />
         </template>
         <template v-slot:cell(selected)="{ rowSelected }">
@@ -35,44 +43,46 @@
           </template>
         </template>
       </b-table>
-      <p>
-        Selected Rows:<br />
-        {{ selected }}
-      </p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import ToolBar from "../../components/ToolBar";
-import ModalAdd from "./ModalAdd"
+import ModalAdd from "./ModalAdd";
+import ModalEdit from "./ModalEdit";
+import $ from "jquery";
 export default {
   name: "Groups",
-  components: { ToolBar , ModalAdd},
+  components: {
+    ToolBar,
+    "modal-edit": ModalEdit,
+    "modal-add": ModalAdd,
+  },
+  computed: {
+    ...mapGetters(["GROUPS"]),
+  },
+  watch: {
+    selected: function () {
+      this.allowAction = this.selected.length > 0 ? false : true;
+
+      this.toolbarData.selected = this.selected;
+    },
+  },
   data() {
     return {
-      addActive: false, 
+      addActive: false,
+      editActive: false,
+      allowAction: true,
+      successMessage: null,
+      dismissSecs: 5,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
       fields: [
         { key: "name", label: "Название" },
         { key: "age_before", label: "Возраст от" },
         { key: "age_after", label: "Возраст до" },
-      ],
-      items: [
-        {
-          name: "name",
-          age_before: 10,
-          age_after: 10,
-        },
-         {
-          name: "name",
-          age_before: 10,
-          age_after: 10,
-        },
-         {
-          name: "name",
-          age_before: "name",
-          age_after: 10,
-        },
       ],
       selectMode: "single",
       selected: [],
@@ -85,36 +95,62 @@ export default {
         ],
       },
       filter: "",
-      filterOn: []
+      filterOn: [],
     };
   },
+  created() {
+    this.GET_GROUPS_API();
+  },
   methods: {
+    ...mapActions(["GET_GROUPS_API", "DELETE_GROUPS_API"]),
     filterEmmitListener(value) {
       this.filter = value;
     },
-    filterOnEmmitListener(value){
-       this.filterOn = value
+    filterOnEmmitListener(value) {
+      this.filterOn = value;
     },
-    addActiveEmmitListener(value){
-       this.addActive = value
+    addActiveEmmitListener(value) {
+      this.addActive = value;
     },
+    editActiveEmmitListener(value) {
+      this.editActive = value;
+    },
+
     onRowSelected(items) {
       this.selected = items;
     },
-    selectAllRows() {
-      this.$refs.selectableTable.selectAllRows();
+
+     toast(message, variant = null, title = null) {
+      this.$bvToast.toast(message, {
+        title: title || 'действие на сайте',
+        variant: variant || 'secondary'
+      });
     },
-    clearSelected() {
-      this.$refs.selectableTable.clearSelected();
+
+
+    daleteEmmitListener() {
+      if (confirm("Удалить?")) {
+        this.DELETE_GROUPS_API(this.selected[0].id)
+          .then(r =>{
+            this.toast('Группа успешно удалена', 'primary')
+          })
+      }
     },
-    selectThirdRow() {
-      // Rows are indexed from 0, so the third row is index 2
-      this.$refs.selectableTable.selectRow(2);
-    },
-    unselectThirdRow() {
-      // Rows are indexed from 0, so the third row is index 2
-      this.$refs.selectableTable.unselectRow(2);
-    },
+
+    // selectAllRows() {
+    //   this.$refs.selectableTable.selectAllRows();
+    // },
+    // clearSelected() {
+    //   this.$refs.selectableTable.clearSelected();
+    // },
+    // selectThirdRow() {
+    //   // Rows are indexed from 0, so the third row is index 2
+    //   this.$refs.selectableTable.selectRow(2);
+    // },
+    // unselectThirdRow() {
+    //   // Rows are indexed from 0, so the third row is index 2
+    //   this.$refs.selectableTable.unselectRow(2);
+    // },
   },
 };
 </script>

@@ -48,13 +48,23 @@
     <div class="pt-3 actions">
       <b-button-toolbar class="d-flex justify-content-end">
         <b-button-group>
-          <b-button class="" variant="primary" @click="addActive=!addActive">
+          <b-button class="" variant="primary" @click="addActive = !addActive">
             <b-icon icon="plus" aria-hidden="true" />
           </b-button>
-          <b-button class="ml-2" variant="primary">
+          <b-button
+            class="ml-2"
+            variant="primary"
+            :disabled="allowAction"
+            @click="editActive = !editActive"
+          >
             <b-icon icon="pencil" aria-hidden="true" />
           </b-button>
-          <b-button class="ml-2" variant="danger">
+          <b-button
+            class="ml-2"
+            @click="deleteItem"
+            variant="danger"
+            :disabled="allowAction"
+          >
             <b-icon icon="trash" aria-hidden="true" />
           </b-button>
         </b-button-group>
@@ -66,11 +76,12 @@
 <script>
 export default {
   name: "ToolBar",
-  props: ["toolbarData"],
+  props: ["toolbarData", "allowAction"],
   data: () => ({
     filter: "",
     filterOn: [],
     addActive: false,
+    editActive: false,
   }),
   watch: {
     filter: function () {
@@ -79,10 +90,21 @@ export default {
     filterOn: function () {
       this.$emit("filterOnEmmitHandler", this.filterOn);
     },
-    addActive: function(){
+    addActive: function () {
       this.$emit("addActiveEmmitHandler", this.addActive);
       this.addActive = false;
-    }
+    },
+
+    editActive: function () {
+      this.$emit("editActiveEmmitHandler", this.editActive);
+      this.editActive = false;
+    },
+  },
+
+  methods: {
+    deleteItem() {
+      this.$emit("daleteEmmitHandler");
+    },
   },
 };
 </script> 

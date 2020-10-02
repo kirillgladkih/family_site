@@ -11,19 +11,19 @@
       cancel-title="Закрыть"
       ok-title="Сохранить"
     >
-      <b-alert show dismissible variant="danger" v-if="errors.length !== 0">
+      <b-alert show variant="danger" v-if="errors.length !== 0">
         <span v-for="error in errors" :key="error">
           {{ error }}
           <br />
         </span>
       </b-alert>
-      <form ref="form" @submit.stop.prevent="handleSubmit">
+      <form ref="form" @submit="handleSubmit">
         <b-form-group
           label="Название"
           label-for="name"
           aria-describedby="name-feedback"
         >
-          <b-form-input id="name" v-model="name" required> </b-form-input>
+          <b-form-input id="name" v-model="name" required />
         </b-form-group>
         <div>
           <label for="age_before">Возраст от</label>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "ModalAdd",
   props: ["action"],
@@ -68,29 +70,57 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["SAVE_GROUPS_API"]),
     resetModal() {
       this.name = null;
       this.age_before = null;
       this.age_after = null;
       this.errors = [];
     },
-    handleOk(bvModalEvt) {
+
+    makeToast(content, variant = null) {
+      this.$bvToast.toast(content, {
+        title: `Variant ${variant || "default"}`,
+        variant: variant,
+        solid: true,
+      });
+    },
+
+    mapData() {
+      return {
+        name: this.name,
+        age_after: this.age_after,
+        age_before: this.age_before,
+      };
+    },
+
+   handleOk(bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault();
       // Trigger submit handler
+
       this.handleSubmit();
     },
-    handleSubmit() {
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return;
-      }
-      // Push the name to submitted names
-      this.submittedNames.push(this.name);
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide("modal-group-add");
+
+    toast(message, variant = null, title = null) {
+      this.$bvToast.toast(message, {
+        title: title || "действие на сайте",
+        variant: variant || "secondary",
       });
+    },
+
+    handleSubmit() {
+      this.SAVE_GROUPS_API(this.mapData())
+        .then((r) => {
+          this.$nextTick(() => {
+            this.$bvModal.hide("modal-group-add");
+          });
+          this.toast("Группа успешно создана", "primary");
+        })
+        .catch((errors) => {
+          this.errors = errors;
+          this.toast("Ошибка!", "danger");
+        });
     },
   },
 };

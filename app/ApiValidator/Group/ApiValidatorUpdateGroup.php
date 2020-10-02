@@ -3,9 +3,10 @@
 
 namespace App\ApiValidator\Group;
 
-use App\ApiValidator\ApiCoreValidator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\ApiValidator\ApiCoreValidator;
+use App\ApiValidator\Group\Attributes;
 
 class ApiValidatorUpdateGroup extends ApiCoreValidator
 {
@@ -32,19 +33,6 @@ class ApiValidatorUpdateGroup extends ApiCoreValidator
 
     public function attributes()
     {
-        return [
-            'name' => 'Название группы',
-            'age_before' => 'Возраст от',
-            'age_after' => 'Возраст до'
-        ];
-    }
-
-    function messages()
-    {
-        return [
-            'unique' => "такое :attribute уже существует",
-            'required' => ":attribute не может быть пустым",
-            'integer' => ':attribute должен быть числом'
-        ];
+        return Attributes::get();
     }
 }
