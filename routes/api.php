@@ -14,3 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('groups', 'App\Http\Controllers\Api\GroupApiController');
+// Route::apiResource('schedule', 'App\Http\Controllers\Api\ScheduleApiController');
+Route::get('schedule/{week_id}/{group_id}', ["App\Http\Controllers\Api\ScheduleApiController", "getSchedule"]);
+Route::put('schedule', ["App\Http\Controllers\Api\ScheduleApiController", "updateSchedule"]);
+Route::get('schedule/{id}', ["App\Http\Controllers\Api\ScheduleApiController", "show"]);
+Route::get('weeks',  ["App\Http\Controllers\Api\ScheduleApiController", "getWeeks"]);

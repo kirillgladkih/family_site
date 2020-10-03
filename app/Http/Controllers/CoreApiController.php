@@ -18,7 +18,7 @@ class CoreApiController extends Controller
     protected $saveValidator  = null;
     protected $updateValidator = null;
 
-    public function index()
+    public function index(Request $request)
     {
         return $this->repository
             ->getAll();

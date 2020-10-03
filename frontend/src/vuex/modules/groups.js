@@ -1,4 +1,5 @@
 import axios from "axios"
+import _ from 'lodash'
 
 let url = `http://${location.hostname}/api/groups`;
 
@@ -25,14 +26,23 @@ const actions = {
                 throw response
             })
     },
-
+    GET_DATEIL_GROUPS({
+        commit
+    }, id) {
+       return axios.get(`${url}/${id}`)
+            .then(response => {
+                return response.data;
+            })
+            .catch(response => {
+                throw response
+            })
+    },
     DELETE_GROUPS_API({
         commit
     }, id) {
         return axios.delete(`${url}/${id}`)
             .then(response => {
                 commit('DELETE_GROUPS_STATE', id)
-
                 return response.data;
             })
             .catch(response => {

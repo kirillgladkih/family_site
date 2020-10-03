@@ -45,9 +45,10 @@ abstract class ARepository
      * @param integer $id
      * @return bool
      */
-    public function remove(int $id){
+    public function remove(int $id)
+    {
         $model = $this->start()->find($id);
-       
+
         return $model ? $model->delete() : false;
     }
 
@@ -61,11 +62,17 @@ abstract class ARepository
     public function edit(array $data, int $id)
     {
         $model = $this->start()
-            ->where('id', $id)
-            ->first();
-        if($model){
+            ->where('id', $id)->first();
+
+        if ($model) {
             $model->fill($data);
             $model->save();
+        }
+
+        if (count($model->relations) > 0) {
+            foreach ($model->relations as $relation) {
+                $model->$relation;
+            }
         }
 
         return $model ? $model : false;
@@ -93,6 +100,12 @@ abstract class ARepository
             ->select('*')
             ->where('id', $id)
             ->first();
+
+        if (count($model->relations) > 0) {
+            foreach ($model->relations as $relation) {
+                $model->$relation;
+            }
+        }
 
         return $model ? $model : false;
     }

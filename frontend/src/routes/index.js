@@ -9,11 +9,11 @@ export default [
         component: () => import('../views/schedule/Schedule'),
         path: '/home/schedule/'
     },
-    // {
-    //     name: 'clients',
-    //     component: () => import('../views/Clients'),
-    //     path: '/home/clients/'
-    // },
+    {
+        name: 'clients',
+        component: () => import('../views/clients/Clients'),
+        path: '/home/clients/'
+    },
     // {
     //     name: 'procreator',
     //     component: () => import('../views/Procreator'),

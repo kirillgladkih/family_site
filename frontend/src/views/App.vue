@@ -43,33 +43,33 @@ export default {
         route: "/home/groups/",
       },
       {
-        name: "Расписание",
-        route: "/home/timetable/",
-      },
-      {
         name: "График",
         route: "/home/schedule/",
       },
-      {
-        name: "Родители",
-        route: "/home/procreator/",
-      },
-      {
-        name: "Лиды",
-        route: "/home/leeds/",
-      },
+      // {
+      //   name: "Расписание",
+      //   route: "/home/timetable/",
+      // },
+      // {
+      //   name: "Родители",
+      //   route: "/home/procreator/",
+      // },
+      // {
+      //   name: "Лиды",
+      //   route: "/home/leeds/",
+      // },
       {
         name: "Клиенты",
         route: "/home/clients/",
       },
-      {
-        name: "Записать",
-        route: "/home/record/",
-      },
-      {
-        name: "Записи",
-        route: "/home/recordings/",
-      },
+      // {
+      //   name: "Записать",
+      //   route: "/home/record/",
+      // },
+      // {
+      //   name: "Записи",
+      //   route: "/home/recordings/",
+      // },
     ],
   }),
 };

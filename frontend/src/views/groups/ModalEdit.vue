@@ -5,6 +5,8 @@
       ref="modal"
       title="Редактировать группу"
       v-model="active"
+      @show="resetModal"
+      @hidden="resetModal"
       @ok="handleOk"
       cancel-title="Закрыть"
       ok-title="Сохранить"
@@ -61,26 +63,37 @@ export default {
       age_after: null,
       id: null,
       errors: [],
+      actionId: null,
     };
   },
   watch: {
-    action: function (value) {
+    action: async function (value) {
       this.active = value;
+      if (value) {
+        this.GET_DATEIL_GROUPS(this.actionId)
+          .then((response) => {
+            this.id = response.id;
+            this.name = response.name;
+            this.age_before = response.age_before;
+            this.age_after = response.age_after;
+          })
+          .catch((response) => {
+            console.log(response)
+            this.toast("Ошибка!!!", "danger");
+          });
+      }
     },
     old: function (value) {
       if (value) {
-        this.id = value.id;
-        this.name = value.name;
-        this.age_before = value.age_before;
-        this.age_after = value.age_after;
+        this.actionId = value.id;
       }
     },
   },
   methods: {
-    ...mapActions(["UPDATE_GROUPS_API"]),
+    ...mapActions(["UPDATE_GROUPS_API", "GET_DATEIL_GROUPS"]),
     resetModal() {
-      this.name = null;
       this.id = null;
+      this.name = null;
       this.age_before = null;
       this.age_after = null;
       this.errors = [];
@@ -94,7 +107,9 @@ export default {
         age_before: this.age_before,
       };
     },
-
+    resetErros() {
+      this.errors = [];
+    },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault();

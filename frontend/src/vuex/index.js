@@ -4,8 +4,7 @@ import schedule from "./modules/schedule"
 import groups from "./modules/groups"
 
 Vue.use(Vuex)
-
-let store = new Vuex.Store({
+const store = new Vuex.Store({
     modules: {
         schedule,
         groups
