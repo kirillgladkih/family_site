@@ -14,11 +14,11 @@ export default [
         component: () => import('../views/clients/Clients'),
         path: '/home/clients/'
     },
-    // {
-    //     name: 'procreator',
-    //     component: () => import('../views/Procreator'),
-    //     path: '/home/procreator/'
-    // },
+    {
+        name: 'procreators',
+        component: () => import('../views/procreators/Procreators'),
+        path: '/home/procreators/'
+    },
     // {
     //     name: 'record',
     //     component: () => import('../views/Record'),

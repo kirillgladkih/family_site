@@ -1,10 +1,12 @@
 <template>
   <div>
+    <modal-add :action="addActive" />
+    <modal-edit :action="editActive" :old="selected[0]" />
     <b-table
       selectable
       :filter="filter"
       :select-mode="selectMode"
-      :items="GROUPS"
+      :items="CLIENTS"
       :fields="fields"
       :filter-included-fields="filterOn"
       @row-selected="onRowSelected"
@@ -41,18 +43,18 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import ToolBar from "../../components/ToolBar";
-// import ModalAdd from "./ModalAdd";
-// import ModalEdit from "./ModalEdit";
+import ModalAdd from "./ModalAdd";
+import ModalEdit from "./ModalEdit";
 import $ from "jquery";
 export default {
-  name: "Groups",
+  name: "Clients",
   components: {
     ToolBar,
-    // "modal-edit": ModalEdit,
-    // "modal-add": ModalAdd,
+    "modal-edit": ModalEdit,
+    "modal-add": ModalAdd,
   },
   computed: {
-    ...mapGetters(["GROUPS"]),
+    ...mapGetters(["CLIENTS"]),
   },
   watch: {
     selected: function () {
@@ -73,12 +75,12 @@ export default {
       fields: [
         { key: "fio", label: "ФИО" },
         { key: "age", label: "Возраст" },
-        { key: "procreator", label: "Родитель" },
-        { key: "group", label: "Группа" },
-        { key: "hours_payed", label: "Оплаченно" },
-        { key: "hours_pass", label: "Пропусков" },
-        { key: "hours_visit", label: "Посещений" },
-        { key: "type", label: "Тип" },
+        { key: "procreator.fio", label: "Родитель" },
+        { key: "group.name", label: "Группа" },
+        { key: "payed", label: "Оплаченно" },
+        { key: "pass", label: "Пропусков" },
+        { key: "visit", label: "Посещений" },
+        { key: "type.name", label: "Тип" },
       ],
       selectMode: "single",
       selected: [],
@@ -95,10 +97,10 @@ export default {
     };
   },
   created() {
-    this.GET_GROUPS_API();
+    this.GET_CLIENTS_API();
   },
   methods: {
-    ...mapActions(["GET_GROUPS_API", "DELETE_GROUPS_API"]),
+    ...mapActions(["GET_CLIENTS_API", "DELETE_CLIENTS_API"]),
     filterEmmitListener(value) {
       this.filter = value;
     },
@@ -125,8 +127,8 @@ export default {
 
     daleteEmmitListener() {
       if (confirm("Удалить?")) {
-        this.DELETE_GROUPS_API(this.selected[0].id).then((r) => {
-          this.toast("Группа успешно удалена", "primary");
+        this.DELETE_CLIENTS_API(this.selected[0].id).then((r) => {
+          this.toast("Клиент успешно удален", "primary");
         });
       }
     },

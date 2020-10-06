@@ -4,7 +4,6 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import App from './src/views/App'
 import routes from './src/routes/index'
 import store from "./src/vuex/index";
-
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)

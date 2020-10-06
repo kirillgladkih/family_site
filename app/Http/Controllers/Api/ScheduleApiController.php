@@ -75,7 +75,7 @@ class ScheduleApiController extends CoreApiController
             $status
         );
     }
-
+    // Получить все недели
     public function getWeeks()
     {
         $response = ['error' => 'not found'];

@@ -50,7 +50,11 @@ abstract class ApiCoreValidator
     return [
       'unique' => ":attribute уже существует в базе данных",
       'required' => ":attribute не может быть пустым",
-      'integer' => ':attribute должно быть числом'
+      'integer' => ':attribute должно быть числом',
+      'integer' => ':attribute должно быть числом',
+      'regex' => ':attribute имеет не верный формат',
+      'exists' => ':attribute отсутствует в базе данных',
+      'phone.regex' => 'Неверный формат номера телефона, пожалуйста, попробуйте снова начиная с +7',
     ];
   }
 

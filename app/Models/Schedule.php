@@ -20,11 +20,7 @@ class Schedule extends CoreModel
         'active' => false,
         'place_count' => 8
     ];
-
-    public $relations = [
-        'group', 'hour', 'day', 'week'
-    ];
-
+    
     public function group()
     {
         return $this->belongsTo(Group::class);

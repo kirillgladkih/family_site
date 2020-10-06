@@ -50,10 +50,10 @@ export default {
       //   name: "Расписание",
       //   route: "/home/timetable/",
       // },
-      // {
-      //   name: "Родители",
-      //   route: "/home/procreator/",
-      // },
+      {
+        name: "Родители",
+        route: "/home/procreators/",
+      },
       // {
       //   name: "Лиды",
       //   route: "/home/leeds/",

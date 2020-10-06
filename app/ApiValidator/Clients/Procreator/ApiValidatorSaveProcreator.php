@@ -35,14 +35,4 @@ class ApiValidatorSaveProcreator extends ApiCoreValidator
         ];
     }
 
-    function messages()
-    {
-        return [
-            'unique' => "такое :attribute уже существует",
-            'required' => "Поле :attribute не может быть пустым",
-            'integer' => 'Вы ввели не число',
-            'phone.regex' => 'Неверный формат номера телефона, пожалуйста, попробуйте снова начиная с +7',
-            'regex' => 'Неверный формат'
-        ];
-    }
 }

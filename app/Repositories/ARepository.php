@@ -20,6 +20,12 @@ abstract class ARepository
      * */
     abstract function init();
 
+    // Связи модели если не нужны то оставлять пустым
+    public static function getRelations()
+    {
+        return [];
+    }
+
     public function start()
     {
         return new $this->model;
@@ -36,6 +42,12 @@ abstract class ARepository
             ->fill($data);
 
         $model->save();
+
+        $relations = static::getRelations();
+
+        if (count($relations) > 0) {
+            $model->load($relations);
+        }
 
         return $model;
     }
@@ -69,8 +81,10 @@ abstract class ARepository
             $model->save();
         }
 
-        if (count($model->relations) > 0) {
-            foreach ($model->relations as $relation) {
+        $relations = static::getRelations();
+
+        if (count($relations) > 0) {
+            foreach ($relations as $relation) {
                 $model->$relation;
             }
         }
@@ -84,9 +98,16 @@ abstract class ARepository
      */
     public function getAll()
     {
-        return $this->start()
-            ->select('*')
-            ->get();
+        $collection = $this->start()->all();
+        
+        $relations = static::getRelations();
+
+        if (count($relations) > 0) {
+            $collection->load($relations);
+        }
+
+        return $collection;
+
     }
     /**
      * Поиск в бд
@@ -101,8 +122,10 @@ abstract class ARepository
             ->where('id', $id)
             ->first();
 
-        if (count($model->relations) > 0) {
-            foreach ($model->relations as $relation) {
+        $relations = static::getRelations();
+
+        if (count($relations) > 0) {
+            foreach ($relations as $relation) {
                 $model->$relation;
             }
         }

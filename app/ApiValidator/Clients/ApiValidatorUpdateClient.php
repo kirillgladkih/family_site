@@ -24,7 +24,7 @@ class ApiValidatorUpdateClient extends ApiCoreValidator
                 'integer',
                 new ExistsAgeInGroup
             ],
-            'procreator_id' => 'required|exists:procreators,id'
+            'procreator_id' => 'exists:procreators,id'
         ];
     }
 
@@ -37,14 +37,4 @@ class ApiValidatorUpdateClient extends ApiCoreValidator
         ];
     }
 
-    function messages()
-    {
-        return [
-            'unique' => "такое :attribute уже существует",
-            'required' => "Поле :attribute не может быть пустым",
-            'integer' => ':attribute Неверный возраст',
-            'regex' => ':attribute Неверный формат',
-            'exists' => 'В базе данных нет такого Поля : :attribute'
-        ];
-    }
 }

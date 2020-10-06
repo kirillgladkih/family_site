@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CoreModel extends Model
+abstract class CoreModel extends Model
 {
     use HasFactory;
-
-    public $relations = [
-        'group', 'hour', 'day'
-    ];
 }

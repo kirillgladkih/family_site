@@ -16,11 +16,4 @@ class ProcreatorRepository extends ARepository
     {
         return Model::class;
     }
-
-    public function save($data)
-    {
-
-        return $this->start()
-            ->create($data);
-    }
 }

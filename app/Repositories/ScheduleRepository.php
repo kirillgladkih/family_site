@@ -16,6 +16,13 @@ class ScheduleRepository extends ARepository
     {
         return Model::class;
     }
+    
+    public static function getRelations()
+    {
+        return [
+            'group', 'hour', 'day', 'week'
+        ];
+    }
 
     public function editSchedule(array $data)
     {
@@ -27,8 +34,10 @@ class ScheduleRepository extends ARepository
             $model->save();
         }
 
-        if(count($model->relations) > 0){
-            foreach($model->relations as $relation){
+        $relations = static::getRelations();
+
+        if(count($relations) > 0){
+            foreach($relations as $relation){
                 $model->$relation; 
             }
         }

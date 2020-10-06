@@ -9,6 +9,7 @@ class Group extends CoreModel
 {
     use HasFactory;
 
+
     protected $fillable = [
         'id',
         'age_before',
