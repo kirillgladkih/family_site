@@ -17,16 +17,16 @@ class ApiValidatorSaveRecord extends ApiCoreValidator
     public function rules()
     {
         return [
-            'date' => [
-                'required',
-                new UniqueColumnForRecord($this->req)
-            ],
-            'client_id' => [
-                'exists:clients,id',
-                new ExistsPayedHours($this->req),
-                new ExistsPlaceCount($this->req)
-            ],
-            'friends' => "integer"
+            // 'date' => [
+            //     'required',
+            //     new UniqueColumnForRecord($this->req)
+            // ],
+            // 'client_id' => [
+            //     'exists:clients,id',
+            //     new ExistsPayedHours($this->req),
+            //     // new ExistsPlaceCount($this->req)
+            // ],
+            // 'friends' => "integer"
         ];
     }
 
@@ -35,15 +35,6 @@ class ApiValidatorSaveRecord extends ApiCoreValidator
         return [
             'client_id' => 'Возраст до',
             'friends' => 'Количество друзей с собой'
-        ];
-    }
-
-    function messages()
-    {
-        return [
-            'required' => "Поле не может быть пустым",
-            'integer' => ":attribute не число",
-            'exists.client_id' => 'Данного клиента не существует в базе данных'
         ];
     }
 }

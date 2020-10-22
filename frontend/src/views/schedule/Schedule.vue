@@ -73,14 +73,14 @@
               ></b-form-spinbutton>
               <div class="pt-3">
                 <button
-                      class="btn btn-schedule"
-                      @click="editItem.active = !editItem.active"
-                      :class="
-                        editItem.active == 0 ? 'btn-secondary' : 'btn-success'
-                      "
-                    >
-                      Активность
-                    </button>
+                  class="btn btn-schedule"
+                  @click="editItem.active = !editItem.active"
+                  :class="
+                    editItem.active == 0 ? 'btn-secondary' : 'btn-success'
+                  "
+                >
+                  Активность
+                </button>
               </div>
               <div class="pt-3">
                 <button class="btn btn-primary" @click="edit()">
@@ -119,7 +119,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["GET_SCHEDULE_API", "UPDATE_SCHEDULE_API", "GET_DATEIL_SCHEDULE"]),
+    ...mapActions([
+      "GET_SCHEDULE_API",
+      "UPDATE_SCHEDULE_API",
+      "GET_DATEIL_SCHEDULE",
+    ]),
     groupEmmitListener(value) {
       this.group_id = value ? value : null;
       this.fetchItems();
@@ -137,7 +141,7 @@ export default {
           }).then(() => (this.stateLoaded = true))
         : false;
     },
-    mapData(item, changeActive=true) {
+    mapData(item, changeActive = true) {
       return {
         id: item.id,
         hour_id: item.hour_id,
@@ -160,16 +164,16 @@ export default {
       if (!this.toolBarActive) {
         await this.UPDATE_SCHEDULE_API(this.mapData(item));
         this.selected = item;
-      }else if(this.toolBarActive){
-      await this.GET_DATEIL_SCHEDULE(item.id).then(r => {
-          this.editItem = r
+      } else if (this.toolBarActive) {
+        await this.GET_DATEIL_SCHEDULE(item.id).then((r) => {
+          this.editItem = r;
           this.place_count = r.place_count;
-        })
+        });
       }
     },
 
     async edit() {
-      const data = this.mapData(this.editItem, false)
+      const data = this.mapData(this.editItem, false);
       await this.UPDATE_SCHEDULE_API(data);
     },
   },
@@ -193,12 +197,11 @@ export default {
       selected: null,
       stateLoaded: false,
       place_count: 0,
-      editItem: null
+      editItem: null,
     };
   },
 };
 </script>
-
 <style type="sass" scoped>
 .btn-schedule {
   width: 100%;

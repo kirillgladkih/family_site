@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Group;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
+use App\Repositories\ClientRepository;
 use App\Repositories\ScheduleRepository;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CoreApiController;
 use App\ApiValidator\Schedule\ApiValidatorSaveSchedule;
 use App\ApiValidator\Schedule\ApiValidatorUpdateSchedule;
-use App\Models\Group;
-use App\Models\Schedule;
-use Illuminate\Support\Facades\Response;
 
 class ScheduleApiController extends CoreApiController
 {
@@ -23,6 +25,29 @@ class ScheduleApiController extends CoreApiController
     public function index(Request $request)
     {
         return $this->repository->getAll();
+    }
+
+    public function getTime($client_id)
+    {
+        $response = ['error' => 'not found'];
+        $status   = '404';
+
+        $validator = Validator::make(
+            ['client_id' => $client_id],
+            ['client_id' => 'exists:clients,id'],
+        );
+
+        if ($validator->fails()) {
+            $response = $validator->errors();
+        } else {
+            $status = '200';
+            $response = $this->repository->mapSchedule($client_id);
+        }
+
+        return Response::json(
+            $response,
+            $status
+        );
     }
 
     //Получить расписание группы по неделе

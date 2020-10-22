@@ -54,33 +54,33 @@ export default {
         name: "Родители",
         route: "/home/procreators/",
       },
-      // {
-      //   name: "Лиды",
-      //   route: "/home/leeds/",
-      // },
+      {
+        name: "Лиды",
+        route: "/home/leeds/",
+      },
       {
         name: "Клиенты",
         route: "/home/clients/",
       },
-      // {
-      //   name: "Записать",
-      //   route: "/home/record/",
-      // },
-      // {
-      //   name: "Записи",
-      //   route: "/home/recordings/",
-      // },
+      {
+        name: "Записать",
+        route: "/home/record/",
+      },
+      {
+        name: "Записи",
+        route: "/home/recordings/",
+      },
     ],
   }),
 };
 </script>
-<style type="scss" scoped>
+<style type="scss">
 .nav-link {
   width: 100%;
-  color: black;
-  opacity: 0.8;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  color: black !important;
+  opacity: 0.8 !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 }
 .nav-link:hover {
   opacity: 0.8;

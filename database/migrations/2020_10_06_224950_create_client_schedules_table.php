@@ -26,7 +26,7 @@ class CreateClientSchedulesTable extends Migration
             $table->foreign('day_id')->references('id')->on('days')->onDelete('cascade');
 
             $table->unique([
-                'hour_id', 'day_id'
+                'hour_id', 'day_id', 'client_id'
             ]);
         });
     }

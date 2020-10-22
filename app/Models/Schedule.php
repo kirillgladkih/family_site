@@ -20,7 +20,7 @@ class Schedule extends CoreModel
         'active' => false,
         'place_count' => 8
     ];
-    
+
     public function group()
     {
         return $this->belongsTo(Group::class);

@@ -1,82 +1,96 @@
 <template>
-  <div class="d-flex justify-content-between flex-wrap">
-    <div class="pt-3 pr-3 title">
-      <h3>{{ toolbarData.title }}</h3>
-    </div>
-    <div class="pr-3 max-width-search pt-3 search">
-      <b-input-group>
-        <b-form-input
-          v-model="filter"
-          type="search"
-          id="filterInput"
-          placeholder="Поиск..."
-        >
-        </b-form-input>
-        <b-input-group-append>
-          <b-button :disabled="!filter" @click="filter = ''">
-            <b-icon icon="arrow-counterclockwise" aria-hidden="true" />
-          </b-button>
-          <b-button
-            v-b-toggle.filter-options
-            v-if="
-              toolbarData.filterFields !== undefined &&
-              !toolbarData.filterFields.length !== 0
-            "
+  <div class="">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="pt-3 pr-3 title">
+        <h3>{{ toolbarData.title }}</h3>
+      </div>
+      <div class="pr-3 max-width-search pt-3 search">
+        <b-input-group>
+          <b-form-input
+            v-model="filter"
+            type="search"
+            id="filterInput"
+            placeholder="Поиск..."
           >
-            <b-icon icon="chevron-down" aria-hidden="true" />
-          </b-button>
-        </b-input-group-append>
-      </b-input-group>
+          </b-form-input>
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">
+              <b-icon icon="arrow-counterclockwise" aria-hidden="true" />
+            </b-button>
+            <b-button
+              v-b-toggle.filter-options
+              v-if="
+                toolbarData.filterFields !== undefined &&
+                !toolbarData.filterFields.length !== 0
+              "
+            >
+              <b-icon icon="chevron-down" aria-hidden="true" />
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
 
-      <b-collapse
-        id="filter-options"
-        v-if="
-          toolbarData.filterFields !== undefined &&
-          !toolbarData.filterFields.length !== 0
-        "
-      >
-        <b-form-checkbox-group v-model="filterOn" class="py-3 d-flex flex-wrap">
-          <b-form-checkbox
-            v-for="item in toolbarData.filterFields"
-            :key="item.key"
-            :value="item.key"
-            >{{ item.label }}</b-form-checkbox
+        <b-collapse
+          id="filter-options"
+          v-if="
+            toolbarData.filterFields !== undefined &&
+            !toolbarData.filterFields.length !== 0
+          "
+        >
+          <b-form-checkbox-group
+            v-model="filterOn"
+            class="py-3 d-flex flex-wrap"
           >
-        </b-form-checkbox-group>
-      </b-collapse>
+            <b-form-checkbox
+              v-for="item in toolbarData.filterFields"
+              class="pb-2"
+              :key="item.key"
+              :value="item.key"
+              >{{ item.label }}</b-form-checkbox
+            >
+          </b-form-checkbox-group>
+        </b-collapse>
+      </div>
+      <div class="pt-3 actions">
+        <b-button-toolbar class="d-flex justify-content-end">
+          <b-button-group>
+            <b-button
+              class=""
+              v-if="toolbarRecord != true"
+              variant="primary"
+              @click="addActive = !addActive"
+            >
+              <b-icon icon="plus" aria-hidden="true" />
+            </b-button>
+            <b-button
+              v-if="toolbarRecord != true"
+              class="ml-2"
+              variant="primary"
+              :disabled="allowAction"
+              @click="editActive = !editActive"
+            >
+              <b-icon icon="pencil" aria-hidden="true" />
+            </b-button>
+            <slot name="extenend-btn"> </slot>
+            <b-button
+              class="ml-2"
+              @click="deleteItem"
+              variant="danger"
+              :disabled="allowAction"
+            >
+              <b-icon icon="trash" aria-hidden="true" />
+            </b-button>
+          </b-button-group>
+        </b-button-toolbar>
+      </div>
     </div>
-    <div class="pt-3 actions">
-      <b-button-toolbar class="d-flex justify-content-end">
-        <b-button-group>
-          <b-button class="" variant="primary" @click="addActive = !addActive">
-            <b-icon icon="plus" aria-hidden="true" />
-          </b-button>
-          <b-button
-            class="ml-2"
-            variant="primary"
-            :disabled="allowAction"
-            @click="editActive = !editActive"
-          >
-            <b-icon icon="pencil" aria-hidden="true" />
-          </b-button>
-          <b-button
-            class="ml-2"
-            @click="deleteItem"
-            variant="danger"
-            :disabled="allowAction"
-          >
-            <b-icon icon="trash" aria-hidden="true" />
-          </b-button>
-        </b-button-group>
-      </b-button-toolbar>
-    </div>
+    <slot name="schedule-slot"></slot>
   </div>
 </template>
 
 <script>
 export default {
   name: "ToolBar",
-  props: ["toolbarData", "allowAction"],
+  props: ["toolbarData", "allowAction", "toolbarRecord"],
   data: () => ({
     filter: "",
     filterOn: [],

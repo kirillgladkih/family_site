@@ -1,22 +1,22 @@
 import axios from "axios"
 import _ from 'lodash'
 
-let url = `http://${location.hostname}/api/clients`;
+let url = `http://${location.hostname}/api/records`;
 
 const state = {
-    clients: []
+    records: []
 }
 const getters = {
-    CLIENTS : state => state.clients,
+    RECORDS: state => state.records,
 }
 
 const actions = {
-    GET_CLIENTS_API({
+    GET_RECORDS_API({
         commit
     }) {
         return axios.get(url)
             .then(response => {
-                commit('SET_CLIENTS_STATE', response.data)
+                commit('SET_RECORDS_STATE', response.data)
 
                 return response.data;
             })
@@ -24,10 +24,10 @@ const actions = {
                 throw response
             })
     },
-    GET_DATEIL_CLIENTS({
+    GET_DATEIL_RECORDS({
         commit
     }, id) {
-       return axios.get(`${url}/${id}`)
+        return axios.get(`${url}/${id}`)
             .then(response => {
                 return response.data;
             })
@@ -35,12 +35,22 @@ const actions = {
                 throw response
             })
     },
-    DELETE_CLIENTS_API({
+    DELETE_RECORDS_WHERE_API({ commit }, data) {
+        let subUrl = `http://${location.hostname}/api/records_deleteWhere`
+        return axios.post(subUrl, data)
+            .then(response => {
+                return response;
+            })
+            .catch(response => {
+                throw response
+            })
+    },
+    DELETE_RECORDS_API({
         commit
     }, id) {
         return axios.delete(`${url}/${id}`)
             .then(response => {
-                commit('DELETE_CLIENTS_STATE', id)
+                commit('DELETE_RECORDS_STATE', id)
                 return response.data;
             })
             .catch(response => {
@@ -48,12 +58,12 @@ const actions = {
             })
     },
 
-    SAVE_CLIENTS_API({
+    SAVE_RECORDS_API({
         commit
     }, data) {
         return axios.post(url, data)
             .then(response => {
-                commit('PUSH_CLIENTS_STATE', response.data)
+                commit('PUSH_RECORDS_STATE', response.data)
 
                 return response.data;
             })
@@ -67,12 +77,12 @@ const actions = {
             })
     },
 
-    UPDATE_CLIENTS_API({
+    UPDATE_RECORDS_API({
         commit
     }, data) {
         return axios.put(`${url}/${data.id}`, data)
             .then(response => {
-                commit('UPDATE_CLIENTS_STATE', response.data)
+                commit('UPDATE_RECORDS_STATE', response.data)
 
                 return response.data;
             })
@@ -91,19 +101,19 @@ const actions = {
 }
 
 const mutations = {
-    SET_CLIENTS_STATE: (state, data) => {
-        state.clients = data
+    SET_RECORDS_STATE: (state, data) => {
+        state.records = data
     },
-    PUSH_CLIENTS_STATE: (state, data) => {
-        state.clients.push(data)
+    PUSH_RECORDS_STATE: (state, data) => {
+        state.records.push(data)
     },
-    DELETE_CLIENTS_STATE: (state, id) => {
-        state.clients = state.clients.filter(item => item.id !== id)
+    DELETE_RECORDS_STATE: (state, id) => {
+        state.records = state.records.filter(item => item.id !== id)
     },
-    UPDATE_CLIENTS_STATE: (state, data) => {
-        state.clients = state.clients.map(
+    UPDATE_RECORDS_STATE: (state, data) => {
+        state.records = state.records.map(
             item => item.id === data.id ?
-            data : item
+                data : item
         )
     },
 }

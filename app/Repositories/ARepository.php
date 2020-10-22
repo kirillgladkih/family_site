@@ -12,6 +12,7 @@ abstract class ARepository
 
     public function __construct()
     {
+        date_default_timezone_set("Asia/Yekaterinburg");
         $this->model = $this->init();
     }
 
@@ -34,7 +35,7 @@ abstract class ARepository
      * Сохранение модели
      *
      * @param [array] $data
-     * @return Model $model
+     * @return object
      */
     public function save(array $data)
     {
@@ -63,13 +64,25 @@ abstract class ARepository
 
         return $model ? $model->delete() : false;
     }
+    /**
+     * Удаление поиск модели по данным и удаление
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function deleteWhere($data)
+    {
+        $model = $this->start()->where($data);
+
+        return $model ? $model->delete() : false;
+    }
 
     /**
      *  Редактирование модели
      *
      * @param array $data
      * @param integer $id
-     * @return Model $model | bool
+     * @return object | bool
      */
     public function edit(array $data, int $id)
     {
@@ -99,7 +112,7 @@ abstract class ARepository
     public function getAll()
     {
         $collection = $this->start()->all();
-        
+
         $relations = static::getRelations();
 
         if (count($relations) > 0) {
@@ -107,13 +120,12 @@ abstract class ARepository
         }
 
         return $collection;
-
     }
     /**
      * Поиск в бд
      *
      * @param integer $id
-     * @return array | null
+     * @return object | null
      */
     public function find(int $id)
     {
@@ -128,6 +140,20 @@ abstract class ARepository
             foreach ($relations as $relation) {
                 $model->$relation;
             }
+        }
+
+        return $model ? $model : false;
+    }
+
+    public function findByParams($data)
+    {
+        $model = $this->start()
+            ->select('*')
+            ->where($data)
+            ->first();
+
+        if (count(static::getRelations()) > 0) {
+            $model->load(static::getRelations());
         }
 
         return $model ? $model : false;

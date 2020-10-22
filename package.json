@@ -21,9 +21,12 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "axios": "^0.19.2",
+        "bootstrap": "^4.5.2",
         "bootstrap-vue": "^2.17.3",
+        "lodash": "^4.17.20",
+        "core-js": "^3.6.5",
         "jquery": "^3.5.1",
-        "v-suggest": "^2.2.0",
         "vue": "^2.6.12",
         "vue-router": "^3.4.5",
         "vuex": "^3.5.1"

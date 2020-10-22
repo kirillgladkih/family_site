@@ -27,7 +27,7 @@ class ScheduleRepository extends ARepository
     public function getTimeTable($day, $group_id)
     {
         $date = date('Y-m-d', strtotime($day));
-        
+
         return $this->start()
             ->where('date', $date)
             ->where('group_id', $group_id)

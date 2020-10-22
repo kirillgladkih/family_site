@@ -1,19 +1,21 @@
 <template>
-  <div class="select">
+  <div>
     <select
       name="procreator-select"
       id="procreator-select"
       v-model="selected"
       class="custom-select"
     >
-    <option v-if="procreator_add === true" :value="null">
-      Добавить родителя
-    </option>
+      <option v-if="procreator_add === true" :value="null">
+        Добавить родителя
+      </option>
+      <option v-if="procreator_edit === true" :value="null">
+        Редактировать родителя
+      </option>
       <option v-for="item in items" :key="item.id" :value="item.id">
         {{ `${item.fio} ${item.phone}` }}
       </option>
     </select>
-    <!-- <input type="text" class="form-control search" placeholder="Поиск..." /> -->
   </div>
 </template>
 
@@ -23,8 +25,9 @@ export default {
   name: "ProcreatorSelect",
   data: () => ({
     selected: null,
+    listActive: false,
   }),
-  props: ['procreator_add'] , 
+  props: ["procreator_add", "procreator_edit"],
   watch: {
     selected: function (value) {
       return this.$emit("EmmitHandler", value);
@@ -42,6 +45,9 @@ export default {
     ...mapActions({
       fetchItems: "GET_PROCREATORS_API",
     }),
+    search(value) {
+      console.log(value);
+    },
   },
 };
 </script>
@@ -49,9 +55,9 @@ export default {
 .select {
   position: relative;
 }
- .search{
-    top: 0;
-    width: 80%;
-    position: absolute;        
+.search {
+  top: 20px;
+  width: 80%;
+  position: absolute;
 }
 </style>

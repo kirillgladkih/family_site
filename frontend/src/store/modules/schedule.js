@@ -36,10 +36,17 @@ const actions = {
                 throw response
             })
     },
+    async GET_SCHEDULE_FOR_RECORD({ commit }, id) {
+        let subUrl = `http://${location.hostname}/api/get_time/${id}`;
+
+        return await axios.get(subUrl)
+            .then(response => response.data)
+            .catch(response => { throw response })
+    },
     async GET_DATEIL_SCHEDULE({
         commit
     }, id) {
-       return await axios.get(`${url}/${id}`)
+        return await axios.get(`${url}/${id}`)
             .then(response => {
                 return response.data;
             })
@@ -125,7 +132,7 @@ const mutations = {
     UPDATE_SCHEDULE_STATE: (state, data) => {
         state.schedule[data.hour.hour] = state.schedule[data.hour.hour].map(
             item => item.id === data.id ?
-            data : item
+                data : item
         )
     },
 }

@@ -3,16 +3,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Client;
 use App\Models\Group;
+use App\Models\Client;
 use App\Models\Record as Model;
-use App\Models\Record;
-use App\Models\Schedule;
+use App\Repositories\ScheduleRepository;
 
 class RecordRepository extends ARepository
 {
+    private $scheduleRepository;
+    private $clientRepository;
+    private $procreatorRepository;
     public function __construct()
     {
+        $this->scheduleRepository = new ScheduleRepository();
+        $this->clientRepository = new ClientRepository();
+        $this->procreatorRepository = new ProcreatorRepository();
+
         parent::__construct();
     }
 
@@ -21,31 +27,26 @@ class RecordRepository extends ARepository
         return Model::class;
     }
 
+    public static function getRelations()
+    {
+        return [
+            'schedule',
+            'client'
+        ];
+    }
+
     public function save($data)
     {
-        $client = Client::find($data['client_id']);
-        if ($data['procreator_with'] == 'Y') {
-            $data['procreator_id'] = $client->procreator_id;
+        $schedule = $this->scheduleRepository->find($data['schedule_id']);
+        $client   = $this->clientRepository->find($data['client_id']);
+
+        if ($client->group_id != 1) {
+            $place_count = $data['with_procreator'] == 1 ? 2 : 1;
+            $schedule->place_count = (int) $schedule->place_count - $place_count;
+            $schedule->save();
         }
 
-        $schedule = Schedule::where('date', $data['date'])
-            ->where('hour', $data['hour'])
-            ->where('group_id', $client->group_id)->first();
-
-        if ($client->client_status == 2) {
-            $count = 1;
-
-            if ($data['procreator_with'] != 'N') {
-                $count++;
-            }
-            $schedule->people_count = (int) $schedule->people_count + $count;
-        } elseif ($client->client_status == 1) {
-            $schedule->lead_count = (int) $schedule->lead_count + 1;
-        }
-
-        $schedule->save();
-
-        return $this->start()->create($data);
+        return parent::save($data);
     }
 
     public function visit($record_id, $client_id)
@@ -71,39 +72,39 @@ class RecordRepository extends ARepository
         return $this->remove($record_id);
     }
 
-    public function remove($id)
-    {
-        $record = Record::where('id', $id)->first();
+    // public function remove($id)
+    // {
+    //     $record = Record::where('id', $id)->first();
 
-        $client = Client::where('id', $record->client_id)->first();
+    //     $client = Client::where('id', $record->client_id)->first();
 
-        $schedule = Schedule::where([
-            'group_id' => $client->group_id,
-            'hour' => $record->hour,
-            'date' => $record->date
-        ])->first();
+    //     $schedule = Schedule::where([
+    //         'group_id' => $client->group_id,
+    //         'hour' => $record->hour,
+    //         'date' => $record->date
+    //     ])->first();
 
-        $count = 0;
+    //     $count = 0;
 
-        if ($client->client_status == 2) {
-            $count += 1;
-            if ($record->procreator_id != null) {
-                $count += 1;
-            }
+    //     if ($client->client_status == 2) {
+    //         $count += 1;
+    //         if ($record->procreator_id != null) {
+    //             $count += 1;
+    //         }
 
-            $schedule->people_count = (int) $schedule->people_count - $count;
-        } elseif ($client->client_status == 1) {
+    //         $schedule->people_count = (int) $schedule->people_count - $count;
+    //     } elseif ($client->client_status == 1) {
 
-            $schedule->lead_count = (int) $schedule->lead_count - 1;
-        }
+    //         $schedule->lead_count = (int) $schedule->lead_count - 1;
+    //     }
 
-        $schedule->save();
+    //     $schedule->save();
 
-        return $this->start()
-            ->destroy($id);
-    }
+    //     return $this->start()
+    //         ->destroy($id);
+    // }
 
-    public function all()
+    public function getAll()
     {
         //Показывать записи только начиная с вчерашнего дня
         date_default_timezone_set("Asia/Yekaterinburg");
@@ -118,6 +119,7 @@ class RecordRepository extends ARepository
 
         foreach ($all as $index => $item) {
             $all[$index]->group = Group::find($item->client->group_id);
+            $all[$index]->procreator = $this->procreatorRepository->find($item->client->procreator_id);
         }
 
         return $all;
