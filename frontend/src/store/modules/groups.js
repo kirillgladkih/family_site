@@ -1,7 +1,8 @@
 import axios from "axios"
 import _ from 'lodash'
+import config from '../config'
 
-let url = `http://${location.hostname}/api/groups`;
+let url = `http://${config.host}/api/groups`;
 
 const state = {
     groups: []
@@ -29,7 +30,7 @@ const actions = {
     GET_DATEIL_GROUPS({
         commit
     }, id) {
-       return axios.get(`${url}/${id}`)
+        return axios.get(`${url}/${id}`)
             .then(response => {
                 return response.data;
             })
@@ -105,7 +106,7 @@ const mutations = {
     UPDATE_GROUPS_STATE: (state, data) => {
         state.groups = state.groups.map(
             item => item.id === data.id ?
-            data : item
+                data : item
         )
     },
 }

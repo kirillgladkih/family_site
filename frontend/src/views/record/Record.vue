@@ -14,7 +14,7 @@
             :key="date.date"
             :value="date.date"
           >
-            {{ `${date.date} ${date.ru}` }}
+            {{ getDate(date) }}
           </option>
         </select>
       </div>
@@ -99,7 +99,7 @@ export default {
                 this.hours[i].record_id = response.id;
               })
               .catch((response) => {
-                this.toast("Ошибка!", "danger");
+                this.toast(response, "danger");
               });
           } else {
             if (this.hours[i].record_id) {
@@ -123,6 +123,11 @@ export default {
         });
       }
     },
+
+    getDate(date) {
+      return date.date.slice(5) + " " + date.ru;
+    },
+
     toast(message, variant = null, title = null) {
       this.$bvToast.toast(message, {
         title: title || "действие на сайте",

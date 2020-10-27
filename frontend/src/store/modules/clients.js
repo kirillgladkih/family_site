@@ -1,7 +1,7 @@
 import axios from "axios"
 import _ from 'lodash'
-
-let url = `http://${location.hostname}/api/clients`;
+import config from '../config'
+let url = `http://${config.host}/api/clients`;
 
 const state = {
     clients: []

@@ -12,7 +12,7 @@ class Client extends Model
     protected $fillable = [
         'id', 'procreator_id', 'age', 'type_id',
         'payed', 'pass', 'visit', 'fio', 'status_id',
-        'group_id'
+        'group_id', 'coins'
     ];
 
     protected static function boot()
@@ -48,7 +48,7 @@ class Client extends Model
     {
         return $this->belongsTo(Type::class, 'type_id');
     }
-    
+
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');

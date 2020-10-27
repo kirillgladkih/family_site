@@ -50,9 +50,11 @@
             class="col-6"
             label-for="procreator_phone"
           >
-            <b-form-input
+            <input
               id="procreator_phone"
-              :disabled="procreator_id !== null"
+              class="form-control"
+              :disabled="procreator_id != null"
+              v-mask="'+7##########'"
               v-model="procreator_phone"
               required
             />

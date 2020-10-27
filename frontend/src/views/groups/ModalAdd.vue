@@ -94,7 +94,7 @@ export default {
       };
     },
 
-   handleOk(bvModalEvt) {
+    handleOk(bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault();
       // Trigger submit handler
@@ -108,7 +108,7 @@ export default {
         variant: variant || "secondary",
       });
     },
-
+    //Логика тут
     handleSubmit() {
       this.SAVE_GROUPS_API(this.mapData())
         .then((r) => {

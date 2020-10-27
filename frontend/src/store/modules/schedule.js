@@ -1,7 +1,8 @@
 import axios from "axios"
 import _ from 'lodash'
+import config from '../config'
 
-let url = `http://${location.hostname}/api/schedule`;
+let url = `http://${config.host}/api/schedule`;
 
 const state = {
     schedule: [],
@@ -37,7 +38,7 @@ const actions = {
             })
     },
     async GET_SCHEDULE_FOR_RECORD({ commit }, id) {
-        let subUrl = `http://${location.hostname}/api/get_time/${id}`;
+        let subUrl = `http://${config.host}/api/get_time/${id}`;
 
         return await axios.get(subUrl)
             .then(response => response.data)
@@ -57,7 +58,7 @@ const actions = {
     async GET_WEEKS_API({
         commit
     }) {
-        return await axios.get(`http://${location.hostname}/api/weeks`)
+        return await axios.get(`http://${config.host}/api/weeks`)
             .then(response => {
                 const data = response.data
                 commit('SET_WEEKS_STATE', data)

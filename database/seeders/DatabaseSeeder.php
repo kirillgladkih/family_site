@@ -27,13 +27,13 @@ class DatabaseSeeder extends Seeder
         DB::table('statuses')->insert([
             'name' => 'Клиент',
         ]);
-        
+
         DB::table('types')->insert([
-            'name' => 'Свободное посещение',
+            'name' => 'Свободное',
         ]);
 
         DB::table('types')->insert([
-            'name' => 'По абонименту',
+            'name' => 'Абонимент',
         ]);
     }
 }

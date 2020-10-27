@@ -17,8 +17,7 @@ class Schedule extends CoreModel
     ];
 
     protected $attributes = [
-        'active' => false,
-        'place_count' => 8
+        'active' => false
     ];
 
     public function group()
@@ -62,6 +61,7 @@ class Schedule extends CoreModel
                 if (!$res = Schedule::where($findData)->first()) {
                     $res = new Schedule();
                     $res->fill($findData);
+                    $res->place_count = 8;
                     $res->save();
                 }
 

@@ -98,6 +98,12 @@ class ScheduleRepository extends ARepository
 
                 $data->record_id = $record ? $record['id'] : null;
 
+                if ($record) {
+                    if (is_int($record->visit)) {
+                        continue;
+                    }
+                }
+
                 $prepare_date = [
                     'date' => $data->date,
                     'ru' => $data->day->day_ru

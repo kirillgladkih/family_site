@@ -20,9 +20,10 @@ class CreateClientsTable extends Migration
             $table->unsignedBigInteger('procreator_id');
             $table->unsignedBigInteger('group_id');
             $table->unsignedTinyInteger('age');
-            $table->unsignedInteger('payed')->default(0);
+            $table->unsignedInteger('coins')->default(0);
             $table->unsignedInteger('pass')->default(0);
             $table->unsignedInteger('visit')->default(0);
+            $table->integer('payed')->default(0);
             $table->char('fio', 170);
 
             $table->unique(['fio', 'age', 'procreator_id']);

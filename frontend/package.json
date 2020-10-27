@@ -13,8 +13,10 @@
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
+    "v-mask": "^2.2.3",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-search-select": "^2.9.2-alpha.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

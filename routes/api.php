@@ -39,4 +39,6 @@ Route::put('client_schedule', ["App\Http\Controllers\Api\ClientScheduleApiContro
 
 // START Record Routes
 Route::apiResource('records', 'App\Http\Controllers\Api\RecordApiController');
+Route::get('records_history/{id}/{after}/{before}', ['App\Http\Controllers\Api\RecordApiController', 'history']);
+Route::put('records_visit/{id}', ['App\Http\Controllers\Api\RecordApiController', 'visit']);
 // END Record Routes

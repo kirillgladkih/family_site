@@ -7,7 +7,8 @@ use App\Repositories\RecordRepository;
 use App\ApiValidator\Record\ApiValidatorSaveRecord;
 use App\ApiValidator\Record\ApiValidatorUpdateRecord;
 use App\Http\Controllers\CoreApiController;
-use Illuminate\Http\Response;
+use App\Models\Client;
+use Illuminate\Support\Facades\Response;
 
 class RecordApiController extends CoreApiController
 {
@@ -18,14 +19,25 @@ class RecordApiController extends CoreApiController
         $this->updateValidator = new ApiValidatorUpdateRecord();
     }
 
-
-    public function deleteWhere(Request $request)
+    public function history($client_id, $before, $after)
     {
-        $response = $this->repository->deleteWhere($$request->input());
+        $client = Client::find($client_id);
+        $response = 'not found';
+        $status = '404';
 
-        return Response::json(
-            $response,
-            '200'
-        );
+        if ($client) {
+            $response = $this->repository->history($client_id, $before, $after);
+            $status = '200';
+        }
+
+        return Response::json($response, $status);
+    }
+
+    public function visit($id, Request $request)
+    {
+        $response = $this->repository->visit($request->input(), $id);
+        $status   = '200';
+
+        return Response::json($response, $status);
     }
 }

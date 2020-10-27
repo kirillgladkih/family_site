@@ -50,9 +50,11 @@
             class="col-6"
             label-for="procreator_phone"
           >
-            <b-form-input
+            <input
               id="procreator_phone"
-              :disabled="procreator_id !== null"
+              class="form-control"
+              :disabled="procreator_id != null"
+              v-mask="'+7##########'"
               v-model="procreator_phone"
               required
             />
@@ -78,6 +80,13 @@
             id="hours_payed"
             v-model="hours_payed"
             min="-1"
+          ></b-form-spinbutton>
+        </b-form-group>
+        <b-form-group label="Баллы" label-for="coins">
+          <b-form-spinbutton
+            id="coins"
+            v-model="coins"
+            min="0"
           ></b-form-spinbutton>
         </b-form-group>
         <b-form-group label="Тип клиента">
@@ -114,6 +123,7 @@ export default {
       procreator_phone: null,
       procreator_fio: null,
       procreator_phone: null,
+      coins: null,
       status_id: 2,
       type_id: 1,
       errors: [],
@@ -132,6 +142,7 @@ export default {
             this.age = response.age;
             this.procreator_id = response.procreator_id;
             this.payed = response.payed;
+            this.coins = response.coins;
             this.child_fio = response.fio;
             this.type_id = response.type_id;
           })
@@ -175,6 +186,7 @@ export default {
       this.editProcreatorId = null;
       this.type_id = 1;
       this.id = null;
+      this.coins = null;
       this.procreator_phone = null;
       this.procreator_fio = null;
       this.procreator_phone = null;
@@ -197,6 +209,7 @@ export default {
         fio: this.child_fio,
         status_id: 2,
         id: this.id,
+        coins: this.coins,
         type_id: this.type_id,
         age: this.age,
         payed: this.hours_payed,

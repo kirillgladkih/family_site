@@ -30,11 +30,21 @@
             @daleteEmmitHandler="daleteEmmitListener"
           >
             <template v-slot:extenend-btn>
-              <b-button class="" :disabled="allowAction" variant="primary">
+              <b-button
+                class=""
+                :disabled="allowAction"
+                @click="visit(true)"
+                variant="primary"
+              >
                 <b-icon icon="plus" aria-hidden="true" />
               </b-button>
-              <b-button class="ml-2" :disabled="allowAction" variant="primary">
-                <b-icon icon="plus" aria-hidden="true" />
+              <b-button
+                class="ml-2"
+                :disabled="allowAction"
+                @click="visit(false)"
+                variant="danger"
+              >
+                <b-icon icon="dash" aria-hidden="true" />
               </b-button>
             </template>
           </ToolBar>
@@ -82,20 +92,18 @@ export default {
       dismissCountDown: 0,
       showDismissibleAlert: false,
       fields: [
-        { key: "client.fio", label: "ФИО ребенка" },
-        { key: "procreator.fio", label: "ФИО родителя" },
         { key: "date", label: "Дата" },
         { key: "hour", label: "Час" },
+        { key: "client.fio", label: "ФИО" },
       ],
       selectMode: "multi",
       selected: [],
       toolbarData: {
         title: "Записи",
         filterFields: [
-          { key: "client.fio", label: "ФИО ребенка" },
-          { key: "procreator.fio", label: "ФИО родителя" },
           { key: "date", label: "Дата" },
           { key: "hour", label: "Час" },
+          { key: "client.fio", label: "ФИО" },
         ],
       },
       filter: "",
@@ -109,6 +117,7 @@ export default {
     ...mapActions({
       fetchItems: "GET_RECORDS_API",
       deleteItem: "DELETE_RECORDS_API",
+      visitItem: "VISIT_RECORDS_API",
     }),
     filterEmmitListener(value) {
       this.filter = value;
@@ -132,7 +141,13 @@ export default {
         variant: variant || "secondary",
       });
     },
-
+    visit(visit) {
+      this.selected.forEach((item) => {
+        const data = item;
+        data.visit = visit;
+        this.visitItem(data);
+      });
+    },
     daleteEmmitListener() {
       if (this.selected.length > 0) {
         if (confirm("Удалить?")) {

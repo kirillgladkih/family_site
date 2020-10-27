@@ -17,16 +17,15 @@ class ApiValidatorSaveRecord extends ApiCoreValidator
     public function rules()
     {
         return [
-            // 'date' => [
-            //     'required',
-            //     new UniqueColumnForRecord($this->req)
-            // ],
-            // 'client_id' => [
-            //     'exists:clients,id',
-            //     new ExistsPayedHours($this->req),
-            //     // new ExistsPlaceCount($this->req)
-            // ],
-            // 'friends' => "integer"
+            'date' => [
+                'required',
+            ],
+            'client_id' => [
+                'exists:clients,id',
+                new ExistsPayedHours($this->req),
+                // new ExistsPlaceCount($this->req)
+            ],
+            'friends' => "integer"
         ];
     }
 

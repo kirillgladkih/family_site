@@ -104,6 +104,7 @@ export default {
   name: "Schedule",
   components: { "group-select": GroupSelect, "week-select": WeekSelect },
   watch: {
+    //Верстка, когда нажали на шестеренку
     toolBarActive: function (value) {
       let element = document.querySelector('div[id="schedule-table"]');
       let element2 = document.querySelector('div[id="schedule-settings"]');
@@ -145,24 +146,24 @@ export default {
       return {
         id: item.id,
         hour_id: item.hour_id,
-        place_count: this.place_count,
         week_id: item.week_id,
         group_id: item.group_id,
         day_id: item.day_id,
         active: changeActive ? !item.active : item.active,
       };
     },
-
+    //Уведомление
     toast(message, variant = null, title = null) {
       this.$bvToast.toast(message, {
         title: title || "действие на сайте",
         variant: variant || "secondary",
       });
     },
-
+    //Поменять активность или детальный
     async ActionItem(item) {
+      const data = this.mapData(item);
       if (!this.toolBarActive) {
-        await this.UPDATE_SCHEDULE_API(this.mapData(item));
+        await this.UPDATE_SCHEDULE_API(data);
         this.selected = item;
       } else if (this.toolBarActive) {
         await this.GET_DATEIL_SCHEDULE(item.id).then((r) => {
@@ -174,6 +175,7 @@ export default {
 
     async edit() {
       const data = this.mapData(this.editItem, false);
+      data.place_count = this.place_count;
       await this.UPDATE_SCHEDULE_API(data);
     },
   },

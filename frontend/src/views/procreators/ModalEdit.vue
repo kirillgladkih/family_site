@@ -22,7 +22,13 @@
           <b-form-input id="fio" v-model="fio" required />
         </b-form-group>
         <b-form-group label="Телефон" label-for="phone">
-          <b-form-input id="phone" v-model="phone" required />
+          <input
+            id="phone"
+            v-model="phone"
+            v-mask="'+7##########'"
+            required
+            class="form-control"
+          />
         </b-form-group>
         <b-form-group label="VK_ID" label-for="vk_id">
           <b-form-input id="VK_ID" v-model="vk_id" required />
@@ -61,7 +67,7 @@ export default {
             this.fio = response.fio;
             this.phone = response.phone;
             this.vk_id = response.vk_id;
-            this.viber_id = response.viber_id;           
+            this.viber_id = response.viber_id;
           })
           .catch((response) => {
             console.log(response);

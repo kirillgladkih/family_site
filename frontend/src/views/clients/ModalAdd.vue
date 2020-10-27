@@ -12,14 +12,14 @@
       ok-title="Сохранить"
     >
       <b-alert show variant="danger" v-if="procreator_errors.length !== 0">
-        Родитель: <br>
+        Родитель: <br />
         <span v-for="error in procreator_errors" :key="error">
           {{ error }}
           <br />
         </span>
       </b-alert>
       <b-alert show variant="danger" v-if="errors.length !== 0">
-        Ребенок: <br>
+        Ребенок: <br />
         <span v-for="error in errors" :key="error">
           {{ error }}
           <br />
@@ -50,9 +50,11 @@
             class="col-6"
             label-for="procreator_phone"
           >
-            <b-form-input
+            <input
               id="procreator_phone"
+              class="form-control"
               :disabled="procreator_id != null"
+              v-mask="'+7##########'"
               v-model="procreator_phone"
               required
             />

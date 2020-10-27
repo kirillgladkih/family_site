@@ -18,7 +18,7 @@ class ExistsPayedHours implements Rule
     {
         $client = Client::find($this->req['client_id']);
 
-        if ($client->hours_payed >= 0) {
+        if ((int) $client->payed > -1) {
             return true;
         }
 

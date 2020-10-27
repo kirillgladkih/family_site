@@ -1,7 +1,8 @@
 import axios from "axios"
 import _ from 'lodash'
+import config from '../config'
 
-let url = `http://${location.hostname}/api/records`;
+let url = `http://${config.host}/api/records`;
 
 const state = {
     records: []
@@ -36,7 +37,7 @@ const actions = {
             })
     },
     DELETE_RECORDS_WHERE_API({ commit }, data) {
-        let subUrl = `http://${location.hostname}/api/records_deleteWhere`
+        let subUrl = `http://${config.host}/api/records_deleteWhere`
         return axios.post(subUrl, data)
             .then(response => {
                 return response;
@@ -97,6 +98,43 @@ const actions = {
                 throw errors
             })
     },
+
+    VISIT_RECORDS_API({
+        commit
+    }, data) {
+        return axios.put(`${url}_visit/${data.id}`, data)
+            .then(response => {
+                commit('DELETE_RECORDS_STATE', data.id)
+                return response.data;
+            })
+            .catch(response => {
+                let tmp = response.response.data.errors
+                let errors = []
+
+                _.forEach(tmp, function (value) {
+                    errors.push(value[0])
+                });
+
+                throw errors
+            })
+    },
+
+    HISTORY_RECORDS_API({ commit }, data) {
+        return axios.get(`${url}_history/${data.id}/${data.before}/${data.after}`, data)
+            .then(response => {
+                return response.data;
+            })
+            .catch(response => {
+                let tmp = response.response.data.errors
+                let errors = []
+
+                _.forEach(tmp, function (value) {
+                    errors.push(value[0])
+                });
+
+                throw errors
+            })
+    }
 
 }
 

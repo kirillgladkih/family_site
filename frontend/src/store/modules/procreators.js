@@ -1,13 +1,14 @@
 import axios from "axios"
 import _ from 'lodash'
+import config from '../config'
 
-let url = `http://${location.hostname}/api/procreators`;
+let url = `http://${config.host}/api/procreators`;
 
 const state = {
     procreators: []
 }
 const getters = {
-    PROCREATORS : state => state.procreators,
+    PROCREATORS: state => state.procreators,
 }
 
 const actions = {
@@ -27,7 +28,7 @@ const actions = {
     GET_DATEIL_PROCREATORS({
         commit
     }, id) {
-       return axios.get(`${url}/${id}`)
+        return axios.get(`${url}/${id}`)
             .then(response => {
                 return response.data;
             })
@@ -103,7 +104,7 @@ const mutations = {
     UPDATE_PROCREATORS_STATE: (state, data) => {
         state.procreators = state.procreators.map(
             item => item.id === data.id ?
-            data : item
+                data : item
         )
     },
 }

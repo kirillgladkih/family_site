@@ -1,6 +1,18 @@
 <template>
   <div>
-    <select
+    <input list="procreators" v-model="selected" class="form-control" />
+    <datalist id="procreators">
+      <option v-if="procreator_add === true" :value="null">
+        Добавить родителя
+      </option>
+      <option v-if="procreator_edit === true" :value="null">
+        Редактировать родителя
+      </option>
+      <option v-for="item in items" :key="item.id" :value="item.id">
+        {{ `${item.fio} ${item.phone}` }}
+      </option>
+    </datalist>
+    <!-- <select
       name="procreator-select"
       id="procreator-select"
       v-model="selected"
@@ -15,7 +27,7 @@
       <option v-for="item in items" :key="item.id" :value="item.id">
         {{ `${item.fio} ${item.phone}` }}
       </option>
-    </select>
+    </select> -->
   </div>
 </template>
 
